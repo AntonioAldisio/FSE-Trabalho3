@@ -1,0 +1,22 @@
+{
+    "project_name":       "bootloader",
+    "project_path":       "/home/lorrany/.platformio/packages/framework-espidf/components/bootloader/subproject",
+    "build_dir":          "/home/lorrany/Documents/PlatformIO/Projects/FSE-Trabalho3/.pio/build/esp32doit-devkit-v1/bootloader",
+    "config_file":        "/home/lorrany/Documents/PlatformIO/Projects/FSE-Trabalho3/sdkconfig.esp32doit-devkit-v1",
+    "config_defaults":    "",
+    "app_elf":            "bootloader.elf",
+    "app_bin":            "bootloader.bin",
+    "git_revision":       "5.0.0",
+    "target":             "esp32",
+    "rev":                "0",
+    "phy_data_partition": "",
+    "monitor_baud" :      "115200",
+    "monitor_toolprefix": "xtensa-esp32-elf-",
+    "config_environment" : {
+        "COMPONENT_KCONFIGS" : "/home/lorrany/.platformio/packages/framework-espidf/components/efuse/Kconfig;/home/lorrany/.platformio/packages/framework-espidf/components/esp_common/Kconfig;/home/lorrany/.platformio/packages/framework-espidf/components/esp_hw_support/Kconfig;/home/lorrany/.platformio/packages/framework-espidf/components/esp_system/Kconfig;/home/lorrany/.platformio/packages/framework-espidf/components/freertos/Kconfig;/home/lorrany/.platformio/packages/framework-espidf/components/hal/Kconfig;/home/lorrany/.platformio/packages/framework-espidf/components/log/Kconfig;/home/lorrany/.platformio/packages/framework-espidf/components/newlib/Kconfig;/home/lorrany/.platformio/packages/framework-espidf/components/spi_flash/Kconfig",
+        "COMPONENT_KCONFIGS_PROJBUILD" : "/home/lorrany/.platformio/packages/framework-espidf/components/bootloader/Kconfig.projbuild;/home/lorrany/.platformio/packages/framework-espidf/components/esp_app_format/Kconfig.projbuild;/home/lorrany/.platformio/packages/framework-espidf/components/esp_rom/Kconfig.projbuild;/home/lorrany/.platformio/packages/framework-espidf/components/esptool_py/Kconfig.projbuild;/home/lorrany/.platformio/packages/framework-espidf/components/partition_table/Kconfig.projbuild"
+    },
+    "build_components" : [ "bootloader", "bootloader_support", "efuse", "esp_app_format", "esp_common", "esp_hw_support", "esp_rom", "esp_system", "esptool_py", "freertos", "hal", "log", "main", "micro-ecc", "newlib", "partition_table", "soc", "spi_flash", "xtensa", "" ],
+    "build_component_paths" : [ "/home/lorrany/.platformio/packages/framework-espidf/components/bootloader", "/home/lorrany/.platformio/packages/framework-espidf/components/bootloader_support", "/home/lorrany/.platformio/packages/framework-espidf/components/efuse", "/home/lorrany/.platformio/packages/framework-espidf/components/esp_app_format", "/home/lorrany/.platformio/packages/framework-espidf/components/esp_common", "/home/lorrany/.platformio/packages/framework-espidf/components/esp_hw_support", "/home/lorrany/.platformio/packages/framework-espidf/components/esp_rom", "/home/lorrany/.platformio/packages/framework-espidf/components/esp_system", "/home/lorrany/.platformio/packages/framework-espidf/components/esptool_py", "/home/lorrany/.platformio/packages/framework-espidf/components/freertos", "/home/lorrany/.platformio/packages/framework-espidf/components/hal", "/home/lorrany/.platformio/packages/framework-espidf/components/log", "/home/lorrany/.platformio/packages/framework-espidf/components/bootloader/subproject/main", "/home/lorrany/.platformio/packages/framework-espidf/components/bootloader/subproject/components/micro-ecc", "/home/lorrany/.platformio/packages/framework-espidf/components/newlib", "/home/lorrany/.platformio/packages/framework-espidf/components/partition_table", "/home/lorrany/.platformio/packages/framework-espidf/components/soc", "/home/lorrany/.platformio/packages/framework-espidf/components/spi_flash", "/home/lorrany/.platformio/packages/framework-espidf/components/xtensa", "" ],
+    "debug_prefix_map_gdbinit": ""
+}
