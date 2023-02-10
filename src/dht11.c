@@ -30,7 +30,7 @@
 
 #include "dht11.h"
 
-static gpio_num_t dht_gpio;
+static gpio_num_t dht_gpio = GPIO_NUM_22;
 static int64_t last_read_time = -2000000;
 static struct dht11_reading last_read;
 
@@ -123,4 +123,19 @@ struct dht11_reading DHT11_read() {
     } else {
         return last_read = _crcError();
     }
+}
+
+float return_temp(){
+    
+    float temp_lida = DHT11_read().temperature;
+
+    return temp_lida;
+}
+
+
+float return_hum(){
+    
+    float hum_lida = DHT11_read().humidity;
+
+    return hum_lida;
 }

@@ -43,4 +43,8 @@ void DHT11_init(gpio_num_t);
 
 struct dht11_reading DHT11_read();
 
+float return_temp();
+
+float return_hum();
+
 #endif

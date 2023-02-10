@@ -11,7 +11,7 @@
 #include "mqtt.h"
 #include "gpio_setup.h"
 #include "adc_module.h"
-
+#include "dht11.h"
 
 #define LDR ADC_CHANNEL_0
 
@@ -41,8 +41,14 @@ void trataComunicacaoComServidor(void * params)
   {
     while(true)
     {
-       float temperatura = 20.0 + (float)rand()/(float)(RAND_MAX/10.0);
+       
+       float temperatura = return_temp();
        sprintf(mensagem, "{\"temperature\": %f}", temperatura);
+       mqtt_envia_mensagem("v1/devices/me/telemetry", mensagem);
+       printf("%s \n", mensagem);
+
+       float humidade = return_hum();
+       sprintf(mensagem, "{\"umidade\": %f}", humidade);
        mqtt_envia_mensagem("v1/devices/me/telemetry", mensagem);
        printf("%s \n", mensagem);
 
