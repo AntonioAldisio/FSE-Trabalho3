@@ -9,6 +9,12 @@
 
 #include "wifi.h"
 #include "mqtt.h"
+#include "gpio_setup.h"
+#include "adc_module.h"
+
+
+#define LDR ADC_CHANNEL_0
+
 
 SemaphoreHandle_t conexaoWifiSemaphore;
 SemaphoreHandle_t conexaoMQTTSemaphore;
@@ -28,6 +34,9 @@ void conectadoWifi(void * params)
 void trataComunicacaoComServidor(void * params)
 {
   char mensagem[50];
+  adc_init(ADC_UNIT_1);
+  pinMode(LDR, GPIO_ANALOG);
+
   if(xSemaphoreTake(conexaoMQTTSemaphore, portMAX_DELAY))
   {
     while(true)
@@ -35,6 +44,13 @@ void trataComunicacaoComServidor(void * params)
        float temperatura = 20.0 + (float)rand()/(float)(RAND_MAX/10.0);
        sprintf(mensagem, "{\"temperature\": %f}", temperatura);
        mqtt_envia_mensagem("v1/devices/me/telemetry", mensagem);
+       printf("%s \n", mensagem);
+
+       int ldr = analogRead(LDR);
+       sprintf(mensagem, "{\"LDR\": %d}", ldr);
+       mqtt_envia_mensagem("v1/devices/me/telemetry", mensagem);
+       printf("%s \n", mensagem);
+
        vTaskDelay(3000 / portTICK_PERIOD_MS);
     }
   }
@@ -48,14 +64,10 @@ void init_NVS(){
       ret = nvs_flash_init();
     }
     ESP_ERROR_CHECK(ret);
-    
-
 }
-void app_main(void)
-{
-    
+void app_main(void){
+
     init_NVS();
-    
     conexaoWifiSemaphore = xSemaphoreCreateBinary();
     conexaoMQTTSemaphore = xSemaphoreCreateBinary();
 
