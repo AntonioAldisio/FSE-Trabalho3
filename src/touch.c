@@ -5,7 +5,7 @@
 #include "driver/gpio.h"
 #include "touch.h"
 
-#define TOUCH_PIN 4 
+#define TOUCH_PIN 39 
 
 int sensor_touch(){
     gpio_config_t io_conf;

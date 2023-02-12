@@ -119,6 +119,7 @@
                 "/home/lorrany/.platformio/packages/framework-espidf/components/ulp/ulp_common/include",
                 "/home/lorrany/.platformio/packages/framework-espidf/components/ulp/ulp_common/include/esp32",
                 "/home/lorrany/.platformio/packages/framework-espidf/components/wifi_provisioning/include",
+                "/home/lorrany/Documents/PlatformIO/Projects/FSE-Trabalho3/.pio/libdeps/esp32doit-devkit-v1/Unity/src",
                 ""
             ],
             "browse": {
@@ -235,6 +236,7 @@
                     "/home/lorrany/.platformio/packages/framework-espidf/components/ulp/ulp_common/include",
                     "/home/lorrany/.platformio/packages/framework-espidf/components/ulp/ulp_common/include/esp32",
                     "/home/lorrany/.platformio/packages/framework-espidf/components/wifi_provisioning/include",
+                    "/home/lorrany/Documents/PlatformIO/Projects/FSE-Trabalho3/.pio/libdeps/esp32doit-devkit-v1/Unity/src",
                     ""
                 ]
             },

@@ -3,7 +3,6 @@
 #include "nvs_flash.h"
 #include "esp_wifi.h"
 #include "esp_event.h"
-#include "esp_http_client.h"
 #include "esp_log.h"
 #include "freertos/semphr.h"
 
@@ -14,6 +13,7 @@
 #include "dht11.h"
 #include "touch.h"
 #include "nvs_module.h"
+#include "led.h"
 
 #define LDR ADC_CHANNEL_0
 
@@ -66,9 +66,11 @@ void trataComunicacaoComServidor(void * params)
 
       int status_touch = sensor_touch();
       sprintf(mensagem, "{\"Touch\": %d}", status_touch);
-      mqtt_envia_mensagem("v1/devices/me/telemetry", mensagem);
+      mqtt_envia_mensagem("v1/devices/me/attributes", mensagem);
       printf("%s \n", mensagem);
       grava_valor_nvs("Touch", status_touch);
+
+      // led();
 
       vTaskDelay(3000 / portTICK_PERIOD_MS);
     }

@@ -14,17 +14,19 @@
 #include "lwip/sockets.h"
 #include "lwip/dns.h"
 #include "lwip/netdb.h"
-
+#include "led.h"
 #include "esp_log.h"
 #include "mqtt_client.h"
 
 #include "mqtt.h"
+#include <cJSON.h>
+#include <string.h>
 
 #define TAG "MQTT"
 
 extern SemaphoreHandle_t conexaoMQTTSemaphore;
 esp_mqtt_client_handle_t client;
-
+void process_message(int data_len, const char *data);
 static void log_error_if_nonzero(const char *message, int error_code)
 {
     if (error_code != 0) {
@@ -42,7 +44,7 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
     case MQTT_EVENT_CONNECTED:
         ESP_LOGI(TAG, "MQTT_EVENT_CONNECTED");
         xSemaphoreGive(conexaoMQTTSemaphore);
-        msg_id = esp_mqtt_client_subscribe(client, "dispositivos/#", 0);
+        msg_id = esp_mqtt_client_subscribe(client, "v1/devices/me/rpc/request/+", 0);
         break;
     case MQTT_EVENT_DISCONNECTED:
         ESP_LOGI(TAG, "MQTT_EVENT_DISCONNECTED");
@@ -62,7 +64,11 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
     case MQTT_EVENT_DATA:
         ESP_LOGI(TAG, "MQTT_EVENT_DATA");
         printf("TOPIC=%.*s\r\n", event->topic_len, event->topic);
-        printf("DATA=%.*s\r\n", event->data_len, event->data);
+        printf("DATA=%.*s\r\n", event->data_len, event->data); 
+        int data_len = event->data_len;
+        const char *data = event->data;
+
+        process_message(data_len, data);       
         break;
     case MQTT_EVENT_ERROR:
         ESP_LOGI(TAG, "MQTT_EVENT_ERROR");
@@ -97,4 +103,34 @@ void mqtt_envia_mensagem(char * topico, char * mensagem)
 {
     int message_id = esp_mqtt_client_publish(client, topico, mensagem, 0, 1, 0);
     ESP_LOGI(TAG, "Mesnagem enviada, ID: %d", message_id);
+}
+
+void process_message(int data_len, const char *data){
+    // char *message = malloc(data_len + 1);
+    // if (message == NULL) {
+    //     fprintf(stderr, "Error: Unable to allocate memory for message\n");
+    //     return;
+    // }
+
+    // memcpy(message, data, data_len);
+    // message[data_len] = '\0';
+
+    // int data_len = event->data_len;
+    // const char *data = event->data;
+
+    cJSON *root = cJSON_Parse(data);
+    if (root == NULL) {
+        fprintf(stderr, "Error: %s\n", cJSON_GetErrorPtr());
+    }
+
+    cJSON *method = cJSON_GetObjectItemCaseSensitive(root, "method");
+    if (cJSON_IsString(method) && (method->valuestring != NULL)) {
+        if (strcmp(method->valuestring, "ligarLuz") == 0) {
+            ledLiga();
+        }else if(strcmp(method->valuestring, "desligaLuz") == 0){
+            ledDesliga();
+        }
+    }
+
+    cJSON_Delete(root);
 }
