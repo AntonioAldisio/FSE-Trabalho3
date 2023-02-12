@@ -13,6 +13,7 @@
 #include "adc_module.h"
 #include "dht11.h"
 #include "touch.h"
+#include "nvs_module.h"
 
 #define LDR ADC_CHANNEL_0
 
@@ -47,35 +48,33 @@ void trataComunicacaoComServidor(void * params)
       sprintf(mensagem, "{\"temperature\": %f}", temperatura);
       mqtt_envia_mensagem("v1/devices/me/telemetry", mensagem);
       printf("%s \n", mensagem);
+      grava_valor_nvs("Temperature", temperatura);
 
       float humidade = return_hum();
       sprintf(mensagem, "{\"umidade\": %f}", humidade);
       mqtt_envia_mensagem("v1/devices/me/telemetry", mensagem);
       printf("%s \n", mensagem);
+      grava_valor_nvs("Umidade", humidade);
+
 
       int ldr = analogRead(LDR);
       sprintf(mensagem, "{\"LDR\": %d}", ldr);
       mqtt_envia_mensagem("v1/devices/me/telemetry", mensagem);
       printf("%s \n", mensagem);
+      grava_valor_nvs("LDR", ldr);
+
 
       int status_touch = sensor_touch();
       sprintf(mensagem, "{\"Touch\": %d}", status_touch);
       mqtt_envia_mensagem("v1/devices/me/telemetry", mensagem);
       printf("%s \n", mensagem);
+      grava_valor_nvs("Touch", status_touch);
+
       vTaskDelay(3000 / portTICK_PERIOD_MS);
     }
   }
 }
 
-void init_NVS(){
-    // Inicializa o NVS
-    esp_err_t ret = nvs_flash_init();
-    if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
-      ESP_ERROR_CHECK(nvs_flash_erase());
-      ret = nvs_flash_init();
-    }
-    ESP_ERROR_CHECK(ret);
-}
 void app_main(void){
 
     init_NVS();

@@ -3,13 +3,9 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "driver/gpio.h"
-
-#include "nvs_handler.h"
 #include "touch.h"
 
 #define TOUCH_PIN 4 
-
-extern void mqtt_envia_mensagem(char *topico, char *mensagem);
 
 int sensor_touch(){
     gpio_config_t io_conf;
