@@ -12,6 +12,7 @@
 #include "gpio_setup.h"
 #include "adc_module.h"
 #include "dht11.h"
+#include "touch.h"
 
 #define LDR ADC_CHANNEL_0
 
@@ -42,22 +43,26 @@ void trataComunicacaoComServidor(void * params)
     while(true)
     {
        
-       float temperatura = return_temp();
-       sprintf(mensagem, "{\"temperature\": %f}", temperatura);
-       mqtt_envia_mensagem("v1/devices/me/telemetry", mensagem);
-       printf("%s \n", mensagem);
+      float temperatura = return_temp();
+      sprintf(mensagem, "{\"temperature\": %f}", temperatura);
+      mqtt_envia_mensagem("v1/devices/me/telemetry", mensagem);
+      printf("%s \n", mensagem);
 
-       float humidade = return_hum();
-       sprintf(mensagem, "{\"umidade\": %f}", humidade);
-       mqtt_envia_mensagem("v1/devices/me/telemetry", mensagem);
-       printf("%s \n", mensagem);
+      float humidade = return_hum();
+      sprintf(mensagem, "{\"umidade\": %f}", humidade);
+      mqtt_envia_mensagem("v1/devices/me/telemetry", mensagem);
+      printf("%s \n", mensagem);
 
-       int ldr = analogRead(LDR);
-       sprintf(mensagem, "{\"LDR\": %d}", ldr);
-       mqtt_envia_mensagem("v1/devices/me/telemetry", mensagem);
-       printf("%s \n", mensagem);
+      int ldr = analogRead(LDR);
+      sprintf(mensagem, "{\"LDR\": %d}", ldr);
+      mqtt_envia_mensagem("v1/devices/me/telemetry", mensagem);
+      printf("%s \n", mensagem);
 
-       vTaskDelay(3000 / portTICK_PERIOD_MS);
+      int status_touch = sensor_touch();
+      sprintf(mensagem, "{\"Touch\": %d}", status_touch);
+      mqtt_envia_mensagem("v1/devices/me/telemetry", mensagem);
+      printf("%s \n", mensagem);
+      vTaskDelay(3000 / portTICK_PERIOD_MS);
     }
   }
 }
