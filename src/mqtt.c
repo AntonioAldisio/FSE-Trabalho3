@@ -22,6 +22,7 @@
 #include <cJSON.h>
 #include <string.h>
 #include "pwm.h"
+#include "nvs_module.h"
 
 #define TAG "MQTT"
 
@@ -112,19 +113,30 @@ void process_message(int data_len, const char *data){
     if (root == NULL) {
         fprintf(stderr, "Error: %s\n", cJSON_GetErrorPtr());
     }
-
+    
+    int led = 2;
     cJSON *method = cJSON_GetObjectItemCaseSensitive(root, "method");
     if (cJSON_IsString(method) && (method->valuestring != NULL)) {
         if (strcmp(method->valuestring, "ligarLuz") == 0) {
-            ledLiga();
+            led = ledLiga();
+
         }else if(strcmp(method->valuestring, "desligaLuz") == 0){
-            ledDesliga();
+            led = ledDesliga();
         }else if(strcmp(method->valuestring, "setValueBuzz") == 0){
             cJSON *params = cJSON_GetObjectItemCaseSensitive(root, "params");
             double params_value = params->valuedouble;
             config_pwm();
             set_pwm(params_value);
             printf("%f\n", params_value);
+        }
+        if(led!=2){
+
+            char mensagem[50];
+
+            sprintf(mensagem, "{\"LED\": %d}", led);
+            mqtt_envia_mensagem("v1/devices/me/attributes", mensagem);
+            printf("%s \n", mensagem);
+            grava_valor_nvs("LED", led);
         }
     }
 

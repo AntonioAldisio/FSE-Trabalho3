@@ -9,18 +9,19 @@
 
 #define LED 2
 
-void ledLiga (){
+int ledLiga (){
     esp_rom_gpio_pad_select_gpio(LED);
     gpio_set_direction(LED, GPIO_MODE_OUTPUT);
 
     
     gpio_set_level(LED, 1);
-
+    return 1;
 }
 
-void ledDesliga(){
+int ledDesliga(){
     esp_rom_gpio_pad_select_gpio(LED);
     gpio_set_direction(LED, GPIO_MODE_OUTPUT);
 
     gpio_set_level(LED, 0);
+    return 0;
 }
