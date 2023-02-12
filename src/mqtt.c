@@ -21,6 +21,7 @@
 #include "mqtt.h"
 #include <cJSON.h>
 #include <string.h>
+#include "pwm.h"
 
 #define TAG "MQTT"
 
@@ -106,17 +107,6 @@ void mqtt_envia_mensagem(char * topico, char * mensagem)
 }
 
 void process_message(int data_len, const char *data){
-    // char *message = malloc(data_len + 1);
-    // if (message == NULL) {
-    //     fprintf(stderr, "Error: Unable to allocate memory for message\n");
-    //     return;
-    // }
-
-    // memcpy(message, data, data_len);
-    // message[data_len] = '\0';
-
-    // int data_len = event->data_len;
-    // const char *data = event->data;
 
     cJSON *root = cJSON_Parse(data);
     if (root == NULL) {
@@ -129,6 +119,12 @@ void process_message(int data_len, const char *data){
             ledLiga();
         }else if(strcmp(method->valuestring, "desligaLuz") == 0){
             ledDesliga();
+        }else if(strcmp(method->valuestring, "setValueBuzz") == 0){
+            cJSON *params = cJSON_GetObjectItemCaseSensitive(root, "params");
+            double params_value = params->valuedouble;
+            config_pwm();
+            set_pwm(params_value);
+            printf("%f\n", params_value);
         }
     }
 
